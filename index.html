@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Server</title>
+</head>
+<body>
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
+
+    ws.onopen = () => {
+      console.log('WebSocket connection opened');
+    };
+
+    ws.onmessage = (event) => {
+      console.log('Received task from the server:', event.data);
+
+      // Execute the received JavaScript code as-is (use with caution)
+      try {
+        const taskResult = eval(event.data);
+        console.log('Task result:', taskResult);
+
+        // Optionally, you can send the result back to the server if needed
+        ws.send(`Result: ${taskResult}`);
+      } catch (error) {
+        console.error('Error executing code:', error);
+      }
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+  </script>
+</body>
+</html>
